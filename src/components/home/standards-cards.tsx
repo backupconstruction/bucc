@@ -13,7 +13,7 @@ export function StandardsCards({
   items: { key: (typeof ITEMS)[number]["key"]; title: string; subtitle: string; body: string }[];
 }) {
   return (
-    <div className="grid gap-5 md:grid-cols-3">
+    <div className="grid gap-5 lg:grid-cols-3">
       {ITEMS.map((meta) => {
         const item = items.find((entry) => entry.key === meta.key);
         if (!item) return null;

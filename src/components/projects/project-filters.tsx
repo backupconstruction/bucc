@@ -70,7 +70,13 @@ export function ProjectFilters({
             placeholder={t("search")}
             className="min-w-0 flex-1 border border-border bg-background px-4 py-2 text-sm sm:max-w-md"
           />
-          <button type="submit" className={buttonClass("dark", cn(goldHoverClass, "px-4 py-2"))}>
+          <button
+            type="submit"
+            className={buttonClass(
+              "dark",
+              cn(goldHoverClass, "px-4 py-2 dark:bg-gold dark:text-ink"),
+            )}
+          >
             {t("searchAction")}
           </button>
         </form>

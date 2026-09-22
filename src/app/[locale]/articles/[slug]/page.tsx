@@ -42,7 +42,7 @@ export default async function ArticleDetailPage({
   const shareUrl = siteUrl(`/${locale}/articles/${article.slug}`);
 
   return (
-    <article className="container-site py-12 md:py-20">
+    <article className="container-wide py-12 md:py-20">
       <p className="text-sm text-muted">
         <Link href="/articles">{t("pageTitle")}</Link>
         {category ? ` · ${localized(category.name, locale)}` : ""}

@@ -105,6 +105,13 @@ export async function getSettings(): Promise<SiteSettings> {
   }, async () => (await readStore()).settings);
 }
 
+function isMissingRelation(error: { code?: string; message?: string } | null) {
+  return (
+    error?.code === "PGRST205" ||
+    Boolean(error?.message?.includes("Could not find the table") || error?.message?.includes("does not exist"))
+  );
+}
+
 export async function updateSettings(settings: SiteSettings) {
   await mutateStore((store) => {
     store.settings = settings;
@@ -116,7 +123,7 @@ export async function updateSettings(settings: SiteSettings) {
       payload: settings,
       updated_at: nowIso(),
     });
-    if (error) throw error;
+    if (error && !isMissingRelation(error)) throw error;
   }
   refreshPublic();
 }
@@ -191,7 +198,7 @@ export async function getProjects(options?: {
       return projectSearchHaystack(item, options?.locale, categoryName).includes(query);
     });
   }
-  return [...projects].sort((a, b) => a.displayOrder - b.displayOrder);
+  return [...projects].sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
 }
 
 export async function getProjectBySlug(slug: string, includeDrafts = false) {
@@ -336,9 +343,7 @@ export async function getArticles(options?: {
       return articleSearchHaystack(item, options?.locale, categoryName).includes(query);
     });
   }
-  return [...articles].sort((a, b) =>
-    (b.publishedAt || b.createdAt).localeCompare(a.publishedAt || a.createdAt),
-  );
+  return [...articles].sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
 }
 
 export async function getArticleBySlug(slug: string, includeDrafts = false) {
@@ -456,7 +461,7 @@ export async function getDocuments(options?: {
       return documentSearchHaystack(item, options?.locale, categoryName).includes(query);
     });
   }
-  return [...documents].sort((a, b) => a.displayOrder - b.displayOrder);
+  return [...documents].sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
 }
 
 export async function getDocumentBySlug(slug: string, includeDrafts = false) {

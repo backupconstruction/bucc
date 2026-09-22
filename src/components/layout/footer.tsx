@@ -24,6 +24,7 @@ export async function Footer({
   const companyLinks = [
     { href: "/about", label: t("aboutUs") },
     { href: "/projects", label: t("portfolio") },
+    { href: "/articles", label: t("insights") },
     { href: "/#process", label: t("executionStandards") },
     { href: "/documents", label: t("globalCompliance") },
     { href: "/contact", label: t("careers") },

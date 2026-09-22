@@ -39,14 +39,14 @@ function StatItem({ stat, active }: { stat: Stat; active: boolean }) {
   const display = `${stat.prefix || ""}${stat.pad ? String(counted).padStart(stat.pad, "0") : counted}${stat.suffix || ""}`;
 
   return (
-    <div>
-      <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+    <div className="text-center md:text-start">
+      <p className="flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 md:justify-start">
         <span className="display text-5xl leading-none tabular-nums text-[#FFC72C] md:text-6xl">{display}</span>
         <span className="max-w-[12rem] text-[0.7rem] font-bold uppercase leading-tight tracking-[0.16em] text-white">
           {stat.label}
         </span>
       </p>
-      <p className="mt-3 max-w-xs text-sm text-white">{stat.note}</p>
+      <p className="mx-auto mt-3 max-w-xs text-sm text-white md:mx-0">{stat.note}</p>
     </div>
   );
 }

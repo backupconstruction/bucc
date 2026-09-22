@@ -115,7 +115,13 @@ export default async function AboutPage({
             }))}
           />
         </div>
-        <Link href="/contact" className={buttonClass("dark", "mt-10 uppercase tracking-[0.12em]")}>
+        <Link
+          href="/contact"
+          className={buttonClass(
+            "dark",
+            "mt-10 uppercase tracking-[0.12em] hover:text-white dark:bg-gold dark:text-ink dark:hover:bg-ink-2 dark:hover:text-white",
+          )}
+        >
           {t("process.cta")}
         </Link>
       </section>

@@ -225,10 +225,18 @@ async function seed() {
 
 async function main() {
   loadEnv();
-  const sql = readFileSync(path.join(process.cwd(), "supabase/migrations/0001_init.sql"), "utf8");
+  const migrationsDir = path.join(process.cwd(), "supabase/migrations");
+  const files = ["0001_init.sql", "0003_document_expiry_files.sql", "0004_article_images.sql"];
   console.log("Applying schema to production Supabase…");
-  await runSql(sql);
-  console.log("Schema applied. Seeding content…");
+  for (const file of files) {
+    const sql = readFileSync(path.join(migrationsDir, file), "utf8");
+    await runSql(sql);
+    console.log(`Applied ${file}`);
+  }
+  await runSql("notify pgrst, 'reload schema'");
+  console.log("Schema applied. Waiting for API cache…");
+  await new Promise((resolve) => setTimeout(resolve, 2500));
+  console.log("Seeding content…");
   await seed();
   console.log("Seed complete.");
 }

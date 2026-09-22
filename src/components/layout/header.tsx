@@ -14,6 +14,7 @@ const LINKS = [
   { href: "/about", key: "about" },
   { href: "/about#services", key: "services" },
   { href: "/projects", key: "projects" },
+  { href: "/articles", key: "articles" },
   { href: "/documents", key: "documents" },
   { href: "/contact", key: "contact" },
 ] as const;
@@ -115,7 +116,7 @@ export function Header({ companyName }: { hours: string; companyName: string }) 
           </div>
           <button
             type="button"
-            className="grid size-10 place-items-center hover:bg-white/10 lg:hidden"
+            className="grid size-10 place-items-center hover:bg-white/10 xl:hidden"
             aria-expanded={open}
             aria-label={open ? t("closeMenu") : t("openMenu")}
             onClick={() => setOpen((value) => !value)}
@@ -135,7 +136,7 @@ export function Header({ companyName }: { hours: string; companyName: string }) 
 
       <div
         className={cn(
-          "fixed inset-0 z-50 flex flex-col bg-ink text-white transition-transform duration-300 ease-out lg:hidden",
+          "fixed inset-0 z-50 flex flex-col bg-ink text-white transition-transform duration-300 ease-out xl:hidden",
           open ? "pointer-events-auto translate-y-0" : "pointer-events-none -translate-y-full",
         )}
         aria-hidden={!open}

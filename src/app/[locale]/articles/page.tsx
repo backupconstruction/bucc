@@ -67,7 +67,7 @@ export default async function ArticlesPage({
               return (
                 <Link key={article.id} href={`/articles/${article.slug}`} className="group">
                   <article>
-                    <div className="overflow-hidden border border-border">
+                    <div className="overflow-hidden rounded-2xl">
                       <MediaImage
                         src={article.featuredImageUrl}
                         alt={localized(article.title, locale)}

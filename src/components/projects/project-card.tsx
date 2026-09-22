@@ -21,7 +21,7 @@ export function ProjectCard({
   return (
     <Link href={`/projects/${project.slug}`} className="group block">
       <article>
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden rounded-2xl">
           <MediaImage
             src={project.featuredImageUrl}
             alt={localized(project.title, locale)}
@@ -31,11 +31,11 @@ export function ProjectCard({
             className="h-64 w-full object-cover transition duration-500 group-hover:scale-[1.02]"
           />
           {project.isFeatured ? (
-            <span className="absolute start-3 top-3 bg-gold px-2 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-ink">
+            <span className="absolute start-3 top-3 rounded-md bg-gold px-2 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-ink">
               {t("featured")}
             </span>
           ) : null}
-          <span className="absolute end-3 bottom-3 grid size-10 place-items-center bg-white text-ink">
+          <span className="absolute end-3 bottom-3 grid size-10 place-items-center rounded-lg bg-white text-ink">
             <IconArrowUpRight className="size-4 rtl:-scale-x-100" />
           </span>
         </div>
