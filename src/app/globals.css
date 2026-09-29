@@ -115,6 +115,7 @@ html[lang="ar"] body {
 html[lang="ar"] .display {
   font-family: var(--font-sans-ar), var(--font-display), sans-serif;
   letter-spacing: 0;
+  line-height: 1.25;
 }
 
 .eyebrow {
