@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { addContactMessage } from "@/lib/cms";
-import { sendContactEmail } from "@/lib/email/send-contact";
+import { ContactEmailError, sendContactEmail } from "@/lib/email/send-contact";
 import { contactSchema } from "@/lib/validations";
 
 const windowMs = 60 * 60 * 1000;
@@ -39,7 +39,11 @@ export async function POST(request: Request) {
     await sendContactEmail(payload);
   } catch (error) {
     console.error("Contact email failed", error);
-    return NextResponse.json({ error: "email" }, { status: 502 });
+    const code = error instanceof ContactEmailError ? error.code : "rejected";
+    return NextResponse.json(
+      { error: code === "not_configured" ? "emailConfig" : "email" },
+      { status: 502 },
+    );
   }
 
   try {

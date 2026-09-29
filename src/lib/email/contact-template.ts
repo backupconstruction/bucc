@@ -1,6 +1,6 @@
 import { siteUrl } from "@/lib/utils";
 
-export const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL?.trim() || "Saad@rateq.qa";
+export const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL?.trim() || "info@bucc.qa";
 
 export const SUBJECT_LABELS: Record<string, { en: string; ar: string }> = {
   general: { en: "General contracting", ar: "مقاولات عامة" },

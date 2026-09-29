@@ -31,18 +31,19 @@ export function ContactForm({ locale, replyEmail }: { locale: string; replyEmail
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, locale }),
       });
+      const result = (await response.json().catch(() => null)) as { error?: string; ok?: boolean } | null;
       if (response.status === 429) {
         pushSiteToast(t("rateLimit"), "error");
         return;
       }
       if (!response.ok) {
-        pushSiteToast(t("error"), "error");
+        pushSiteToast(result?.error === "emailConfig" ? t("emailConfig") : t("emailFailed"), "error");
         return;
       }
       form.reset();
       pushSiteToast(t("success"));
     } catch {
-      pushSiteToast(t("error"), "error");
+      pushSiteToast(t("emailFailed"), "error");
     } finally {
       setStatus("idle");
     }
@@ -103,7 +104,7 @@ export function ContactForm({ locale, replyEmail }: { locale: string; replyEmail
           />
         </label>
         <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-end sm:justify-between">
-          <p className="max-w-xs text-xs leading-relaxed text-white/45">{t("note", { email: replyEmail || "Saad@rateq.qa" })}</p>
+          <p className="max-w-xs text-xs leading-relaxed text-white/45">{t("note", { email: replyEmail || "info@bucc.qa" })}</p>
           <button
             type="submit"
             disabled={status === "sending"}
