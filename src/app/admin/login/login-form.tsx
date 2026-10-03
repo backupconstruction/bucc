@@ -48,10 +48,7 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={pending}
-          className={buttonClass(
-            "dark",
-            "mt-6 w-full hover:bg-gold hover:text-espresso dark:hover:bg-gold dark:hover:text-espresso",
-          )}
+          className={buttonClass("gold", "mt-6 w-full")}
         >
           {pending ? t("signingIn") : t("signIn")}
         </button>
