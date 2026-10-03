@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { IconArrow } from "@/components/ui/icons";
+import { SelectDropdown } from "@/components/ui/select-dropdown";
 import { pushSiteToast } from "@/components/ui/site-toast";
 
 const SUBJECTS = ["general", "designBuild", "projectManagement", "interiorDesign"] as const;
@@ -84,13 +85,20 @@ export function ContactForm({ locale, replyEmail }: { locale: string; replyEmail
           <span>
             {t("subject")} <span className="text-[#FFC72C]">*</span>
           </span>
-          <select name="subject" required defaultValue="general" className={`${field} appearance-none`}>
-            {SUBJECTS.map((value) => (
-              <option key={value} value={value}>
-                {t(`subjects.${value}`)}
-              </option>
-            ))}
-          </select>
+          <SelectDropdown
+            name="subject"
+            label={t("subject")}
+            required
+            defaultValue="general"
+            triggerClassName={field}
+            menuClassName="overflow-hidden rounded-md border border-white/10 bg-[#111] text-white shadow-[var(--shadow)]"
+            optionClassName="text-white hover:bg-white/10"
+            selectedClassName="bg-[#FFC72C] font-medium text-ink"
+            options={SUBJECTS.map((value) => ({
+              value,
+              label: t(`subjects.${value}`),
+            }))}
+          />
         </label>
         <label className="grid gap-2 text-sm">
           <span>{t("message")}</span>

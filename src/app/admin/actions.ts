@@ -54,7 +54,6 @@ export async function upsertProjectAction(formData: FormData) {
     "startDate",
     "completionDate",
     "progress",
-    "displayOrder",
     "services",
     "contractValue",
     "excerpt_en",
@@ -66,7 +65,18 @@ export async function upsertProjectAction(formData: FormData) {
     "seo_description_en",
     "seo_description_ar",
   ];
-  if (required.some((key) => !text(formData, key)) || !featuredImageUrl || !images.length || images.length > MAX_GALLERY_IMAGES) {
+  const progress = Number(text(formData, "progress"));
+  const contractValue = text(formData, "contractValue").replace(/[^\d]/g, "");
+  if (
+    required.some((key) => !text(formData, key)) ||
+    !featuredImageUrl ||
+    !images.length ||
+    images.length > MAX_GALLERY_IMAGES ||
+    !Number.isInteger(progress) ||
+    progress < 1 ||
+    progress > 100 ||
+    !contractValue
+  ) {
     await fail("allProjectFields");
   }
   const payload: ProjectInput = {
@@ -83,16 +93,16 @@ export async function upsertProjectAction(formData: FormData) {
     status: (text(formData, "status") || "planning") as ProjectInput["status"],
     startDate: text(formData, "startDate") || null,
     completionDate: text(formData, "completionDate") || null,
-    contractValue: text(formData, "contractValue"),
+    contractValue,
     services: text(formData, "services")
       .split(",")
       .map((item) => item.trim())
       .filter(Boolean),
     featuredImageUrl,
-    progress: text(formData, "progress") ? Number(text(formData, "progress")) : null,
+    progress,
     isPublished: bool(formData, "isPublished"),
     isFeatured: bool(formData, "isFeatured"),
-    displayOrder: Number(text(formData, "displayOrder") || 99),
+    displayOrder: 0,
     seoTitle: { en: text(formData, "seo_title_en"), ar: text(formData, "seo_title_ar") },
     seoDescription: { en: text(formData, "seo_description_en"), ar: text(formData, "seo_description_ar") },
     publishedAt: bool(formData, "isPublished") ? new Date().toISOString() : null,
@@ -170,7 +180,7 @@ export async function upsertDocumentAction(formData: FormData) {
     hasExpiry,
     expiresAt: hasExpiry && expires ? expires.toISOString() : null,
     isPublished: bool(formData, "isPublished"),
-    displayOrder: Number(text(formData, "displayOrder") || 99),
+    displayOrder: 0,
     publishedAt: bool(formData, "isPublished") ? new Date().toISOString() : null,
   };
   await saveDocument(payload, id);

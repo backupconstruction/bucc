@@ -1,4 +1,5 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { getAdminSession } from "@/lib/auth/session";
@@ -24,6 +25,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     getAdminSession(),
     getSettings(),
   ]);
+  const pathname = (await headers()).get("x-pathname") || "";
+  const isLogin = pathname === "/admin/login";
+  if (!session && !isLogin) {
+    redirect("/admin/login");
+  }
   const companyName = settings.companyName
     ? localized(settings.companyName, locale)
     : undefined;

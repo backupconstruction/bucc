@@ -79,7 +79,7 @@ export function AdminShell({
       <Suspense fallback={null}>
         <AdminToast />
       </Suspense>
-      <aside className="fixed inset-y-0 start-0 z-20 hidden w-72 flex-col bg-ink text-cream lg:flex">
+      <aside className="fixed inset-y-0 start-0 z-20 hidden w-72 flex-col bg-ink text-cream md:flex">
         <span className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent" />
         <span className="pointer-events-none absolute inset-y-10 end-0 w-px bg-gradient-to-b from-gold/0 via-gold/40 to-gold/0" />
 
@@ -159,11 +159,11 @@ export function AdminShell({
         </div>
       </aside>
 
-      <div className="lg:ps-72">
-        <header className="sticky top-0 z-30 hidden items-center justify-end gap-3 border-b border-border bg-background/85 px-4 py-3 backdrop-blur lg:flex lg:px-10">
+      <div className="md:ps-72">
+        <header className="sticky top-0 z-30 hidden items-center justify-end gap-3 border-b border-border bg-background/85 px-4 py-3 backdrop-blur md:flex md:px-10">
           <AdminSwitchers />
         </header>
-        <header className="sticky top-0 z-30 flex items-center justify-between gap-3 bg-ink px-4 py-3 text-cream lg:hidden">
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-3 bg-ink px-4 py-3 text-cream md:hidden">
           <Logo compact tone="light" />
           <div className="flex items-center gap-1">
             <AdminSwitchers tone="ink" />
@@ -184,7 +184,7 @@ export function AdminShell({
 
         <div
           className={cn(
-            "fixed inset-0 z-40 flex flex-col bg-ink text-cream transition-transform duration-300 ease-out lg:hidden",
+            "fixed inset-0 z-40 flex flex-col bg-ink text-cream transition-transform duration-300 ease-out md:hidden",
             open ? "pointer-events-auto translate-y-0" : "pointer-events-none -translate-y-full",
           )}
           aria-hidden={!open}
@@ -269,7 +269,7 @@ export function AdminShell({
           </div>
         </div>
 
-        <div className="px-4 py-8 lg:px-10">{children}</div>
+        <div className="px-4 py-8 md:px-10">{children}</div>
       </div>
     </div>
   );
