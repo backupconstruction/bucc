@@ -53,6 +53,20 @@ export async function Footer({
         </div>
         <div className="mt-14 flex flex-col gap-3 border-t border-white/20 pt-6 text-xs text-white/45 sm:flex-row sm:justify-between">
           <p>{t("rights", { year, company: name })}</p>
+          <p>
+            {t.rich("broughtToLife", {
+              name: (chunks) => (
+                <a
+                  href="https://qwebdigital.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/70 underline-offset-2 hover:text-[#FFC72C] hover:underline"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
+          </p>
         </div>
       </div>
     </footer>
