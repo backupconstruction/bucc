@@ -204,6 +204,12 @@ export async function updateSettingsAction(formData: FormData) {
     hours: { en: text(formData, "hours_en"), ar: text(formData, "hours_ar") },
     address: { en: text(formData, "address_en"), ar: text(formData, "address_ar") },
     mapEmbedUrl: text(formData, "mapEmbedUrl"),
+    tiktokUrl: text(formData, "tiktokUrl"),
+    youtubeUrl: text(formData, "youtubeUrl"),
+    whatsapp: text(formData, "whatsapp"),
+    instagramUrl: text(formData, "instagramUrl"),
+    facebookUrl: text(formData, "facebookUrl"),
+    twitterUrl: text(formData, "twitterUrl"),
   };
   if (
     !settings.companyName.en ||

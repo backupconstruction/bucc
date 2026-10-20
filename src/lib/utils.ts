@@ -84,6 +84,20 @@ export function siteUrl(path = "") {
   return `${base.replace(/\/$/, "")}${path}`;
 }
 
+export const DEFAULT_SOCIAL = {
+  tiktokUrl: "https://www.tiktok.com/@backup.construction",
+  youtubeUrl: "https://www.youtube.com/@BackupConstructionCompany",
+  whatsapp: "97450248889",
+};
+
+export function whatsappHref(value: string) {
+  const raw = value.trim();
+  if (!raw) return "";
+  if (/^https?:\/\//i.test(raw)) return raw;
+  const digits = raw.replace(/\D/g, "");
+  return digits ? `https://wa.me/${digits}` : "";
+}
+
 export const DOHA_MAP_QUERY = "Doha, Qatar";
 
 export function mapsQueryEmbed(query: string) {

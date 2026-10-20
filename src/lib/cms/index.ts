@@ -5,6 +5,7 @@ import { isSupabaseConfigured, isSupabaseUnavailable } from "@/lib/supabase/conf
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { deleteUpload } from "@/lib/uploads";
 import {
+  DEFAULT_SOCIAL,
   documentAttachments,
   documentExpiry,
   featuredImageUrlFrom,
@@ -113,12 +114,24 @@ function withArabicCompanyName(settings: SiteSettings): SiteSettings {
   return { ...settings, companyName: { ...settings.companyName, ar } };
 }
 
+function withSocialDefaults(settings: SiteSettings): SiteSettings {
+  return {
+    ...settings,
+    tiktokUrl: settings.tiktokUrl ?? DEFAULT_SOCIAL.tiktokUrl,
+    youtubeUrl: settings.youtubeUrl ?? DEFAULT_SOCIAL.youtubeUrl,
+    whatsapp: settings.whatsapp ?? DEFAULT_SOCIAL.whatsapp,
+    instagramUrl: settings.instagramUrl ?? "",
+    facebookUrl: settings.facebookUrl ?? "",
+    twitterUrl: settings.twitterUrl ?? "",
+  };
+}
+
 export async function getSettings(): Promise<SiteSettings> {
   const settings = await fromSupabase(async () => {
     const remote = await fetchRemoteSettings();
     return remote || (await readStore()).settings;
   }, async () => (await readStore()).settings);
-  return withArabicCompanyName(settings);
+  return withSocialDefaults(withArabicCompanyName(settings));
 }
 
 function isMissingRelation(error: { code?: string; message?: string } | null) {

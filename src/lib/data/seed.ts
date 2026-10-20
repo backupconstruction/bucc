@@ -27,6 +27,12 @@ export const seedStore: CmsStore = {
       ar: "الدوحة، قطر",
     },
     mapEmbedUrl: "",
+    tiktokUrl: "https://www.tiktok.com/@backup.construction",
+    youtubeUrl: "https://www.youtube.com/@BackupConstructionCompany",
+    whatsapp: "97450248889",
+    instagramUrl: "",
+    facebookUrl: "",
+    twitterUrl: "",
   },
   categories: [
     { id: "cat-villas", slug: "villas", type: "project", name: { en: "Villas", ar: "فلل" } },

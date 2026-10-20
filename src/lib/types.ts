@@ -122,6 +122,12 @@ export type SiteSettings = {
   hours: Localized;
   address: Localized;
   mapEmbedUrl: string;
+  tiktokUrl: string;
+  youtubeUrl: string;
+  whatsapp: string;
+  instagramUrl: string;
+  facebookUrl: string;
+  twitterUrl: string;
 };
 
 export type ContactMessage = {

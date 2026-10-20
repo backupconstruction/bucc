@@ -58,6 +58,12 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         defaultValue={settings.mapEmbedUrl}
         dir="ltr"
       />
+      <Field label={t("tiktokUrl")} name="tiktokUrl" defaultValue={settings.tiktokUrl} dir="ltr" />
+      <Field label={t("youtubeUrl")} name="youtubeUrl" defaultValue={settings.youtubeUrl} dir="ltr" />
+      <Field label={t("whatsapp")} name="whatsapp" defaultValue={settings.whatsapp} dir="ltr" />
+      <Field label={t("instagramUrl")} name="instagramUrl" defaultValue={settings.instagramUrl} dir="ltr" />
+      <Field label={t("facebookUrl")} name="facebookUrl" defaultValue={settings.facebookUrl} dir="ltr" />
+      <Field label={t("twitterUrl")} name="twitterUrl" defaultValue={settings.twitterUrl} dir="ltr" />
       <button type="submit" disabled={saving} className={buttonClass("dark", goldHoverClass)}>
         {saving ? t("saving") : t("saveSettings")}
       </button>
