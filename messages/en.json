@@ -24,16 +24,26 @@
     "system": "System"
   },
   "hero": {
-    "eyebrow": "— Contracting Excellence in Qatar",
-    "title": "Structural integrity. Execution without compromise.",
-    "titleLine1": "Structural integrity.",
-    "titleLine2": "Execution without compromise.",
-    "subtitle": "Our commitment to innovation drives us to employ cutting-edge technology and sustainable practices in every project we undertake. We blend creativity with precision engineering.",
-    "ctaPrimary": "Explore Services",
-    "ctaSecondary": "Request Proposal",
+    "eyebrow": "YOUR CONSTRUCTION PARTNER IN QATAR",
+    "title": "We build trust. Then we build your vision.",
+    "titleLine1": "We build trust.",
+    "titleLine2": "Then we build your vision.",
+    "subtitle": "From the first plan to the finishing touches. Construction, renovation and fit-out, with attention to every detail.",
+    "ctaPrimary": "Let’s discuss your project",
+    "ctaSecondary": "Explore our services",
     "ongoing": "Ongoing works",
     "coverTitle": "Doha Port Modernization Phase II",
-    "coverSubtitle": "Back Up Construction engineered key structural elements to international standards."
+    "coverSubtitle": "Back Up Construction engineered key structural elements to international standards.",
+    "location": "BUCC · DOHA, QATAR",
+    "bottom": "Built around your vision. Delivered with care.",
+    "scroll": "Continue",
+    "pause": "Pause slideshow",
+    "play": "Play slideshow",
+    "slides": {
+      "villa": "01 Villa",
+      "palace": "02 Palace",
+      "commercial": "03 Commercial"
+    }
   },
   "ticker": {
     "projectManagement": "Project Management",

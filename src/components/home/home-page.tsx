@@ -1,11 +1,12 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { buttonClass } from "@/components/ui/button";
-import { IconArrow, IconArrowUpRight } from "@/components/ui/icons";
+import { IconArrowUpRight } from "@/components/ui/icons";
 import { ContactDetails } from "@/components/contact/contact-details";
 import { ContactForm } from "@/components/contact/contact-form";
 import { CredentialsCards } from "@/components/home/credentials-cards";
 import { FeaturedProjects } from "@/components/home/featured-projects";
+import { HomeHero } from "@/components/home/home-hero";
 import { HomeStats } from "@/components/home/home-stats";
 import { ServiceCards, type ServiceKey } from "@/components/home/service-cards";
 import { StandardsCards } from "@/components/home/standards-cards";
@@ -34,41 +35,7 @@ export async function HomePage({
 
   return (
     <>
-      <section className="bg-[var(--hero-bg)] py-10 md:py-16">
-        <div className="container-wide grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <div>
-            <p className="eyebrow">{t("hero.eyebrow")}</p>
-            <h1 className="display mt-4 text-5xl md:text-7xl lg:text-[5.4rem]">
-              {t("hero.titleLine1")}
-              <br />
-              <span className="text-[#FFC72C]">{t("hero.titleLine2")}</span>
-            </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted md:text-lg">
-              {t("hero.subtitle")}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/about#services" className={buttonClass("gold", "uppercase tracking-[0.12em]")}>
-                {t("hero.ctaPrimary")} <IconArrow className="size-4" />
-              </Link>
-              <Link href="/contact" className={buttonClass("secondary", "uppercase tracking-[0.12em]")}>
-                {t("hero.ctaSecondary")} <IconArrowUpRight className="size-4" />
-              </Link>
-            </div>
-          </div>
-          <div className="relative">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/hero-media.svg"
-              alt={t("hero.coverTitle")}
-              className="h-[460px] w-full rounded-[2rem] object-cover md:h-[520px]"
-            />
-            <div className="absolute inset-x-0 bottom-0 rounded-b-[2rem] bg-ink/85 px-5 py-4 text-white backdrop-blur-sm">
-              <p className="text-sm font-semibold">{t("hero.coverTitle")}</p>
-              <p className="text-xs text-white/70">{t("hero.coverSubtitle")}</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeHero />
 
       <HomeStats
         items={[
@@ -96,7 +63,7 @@ export async function HomePage({
         ]}
       />
 
-      <section className="container-wide grid items-center gap-12 py-20 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 lg:py-28">
+      <section id="about" className="container-wide grid items-center gap-12 py-20 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 lg:py-28">
         <div className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
