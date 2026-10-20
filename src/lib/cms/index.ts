@@ -104,11 +104,21 @@ async function localList<T>(read: (store: Awaited<ReturnType<typeof readStore>>)
   return read(await readStore());
 }
 
+function withArabicCompanyName(settings: SiteSettings): SiteSettings {
+  const ar = settings.companyName.ar
+    .replaceAll("باك أب للمقاولات", "باك اب للمقاولات")
+    .replaceAll("باك أب للإنشاءات", "باك اب للمقاولات")
+    .replaceAll("باك أب", "باك اب");
+  if (ar === settings.companyName.ar) return settings;
+  return { ...settings, companyName: { ...settings.companyName, ar } };
+}
+
 export async function getSettings(): Promise<SiteSettings> {
-  return fromSupabase(async () => {
-    const settings = await fetchRemoteSettings();
-    return settings || (await readStore()).settings;
+  const settings = await fromSupabase(async () => {
+    const remote = await fetchRemoteSettings();
+    return remote || (await readStore()).settings;
   }, async () => (await readStore()).settings);
+  return withArabicCompanyName(settings);
 }
 
 function isMissingRelation(error: { code?: string; message?: string } | null) {

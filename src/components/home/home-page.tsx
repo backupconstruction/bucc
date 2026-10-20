@@ -214,10 +214,9 @@ export async function HomePage({
             </h2>
             <p className="mt-5 max-w-md text-white/65">{t("contact.lead")}</p>
             <ContactDetails
-              email={settings.email}
-              phone={settings.phone}
               address={localized(settings.address, locale)}
-              hotlinesLabel={t("contact.officeHotlines")}
+              generalLabel={t("contact.generalInquiry")}
+              quoteLabel={t("contact.quotations")}
               queriesLabel={t("contact.executiveQueries")}
               hqLabel={t("contact.headquarters")}
             />

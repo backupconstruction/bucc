@@ -233,6 +233,8 @@
     "title": "Secure Your Structural Estimate",
     "formTitle": "Request Site Inspection & Quotation",
     "officeHotlines": "Office Hotlines",
+    "generalInquiry": "General inquiry",
+    "quotations": "Quotations",
     "executiveQueries": "Executive Queries",
     "headquarters": "Corporate Headquarters",
     "lead": "Discuss schedules, design plans and engineering requirements with our technical team in Doha.",
@@ -257,6 +259,7 @@
     "pageTitle": "Contact",
     "pageLead": "Discuss schedules, design plans and engineering requirements with our technical team.",
     "subjects": {
+      "generalInquiry": "General inquiry",
       "general": "General contracting",
       "designBuild": "Design & build",
       "projectManagement": "Project management",

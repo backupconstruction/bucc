@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ContactDetails } from "@/components/contact/contact-details";
 import { ContactForm } from "@/components/contact/contact-form";
 import { getSettings } from "@/lib/cms";
-import { localized, mapsEmbedSrc } from "@/lib/utils";
+import { localized, mapsEmbedSrcOrDoha } from "@/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -28,11 +28,7 @@ export default async function ContactPage({
   setRequestLocale(locale);
   const t = await getTranslations("contact");
   const settings = await getSettings();
-  const mapSrc =
-    mapsEmbedSrc(settings.mapEmbedUrl) ||
-    (localized(settings.address, locale)
-      ? `https://maps.google.com/maps?q=${encodeURIComponent(localized(settings.address, locale))}&output=embed`
-      : "");
+  const mapSrc = mapsEmbedSrcOrDoha(settings.mapEmbedUrl, "Doha, Qatar");
 
   return (
     <div className="bg-[#2a2a2a] py-16 md:py-24">
@@ -42,10 +38,9 @@ export default async function ContactPage({
           <h1 className="display mt-3 max-w-xl text-5xl text-white !normal-case md:text-7xl">{t("title")}</h1>
           <p className="mt-5 max-w-md text-lg text-white/65">{t("lead")}</p>
           <ContactDetails
-            email={settings.email}
-            phone={settings.phone}
             address={localized(settings.address, locale)}
-            hotlinesLabel={t("officeHotlines")}
+            generalLabel={t("generalInquiry")}
+            quoteLabel={t("quotations")}
             queriesLabel={t("executiveQueries")}
             hqLabel={t("headquarters")}
           />

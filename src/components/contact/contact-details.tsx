@@ -1,5 +1,11 @@
 import type { ReactNode } from "react";
 import { IconMail, IconPhone, IconPin } from "@/components/ui/icons";
+import {
+  CONTACT_GENERAL_EMAIL,
+  CONTACT_QUOTE_EMAILS,
+  GENERAL_CONTACT_PHONES,
+  QUOTE_CONTACT_PHONES,
+} from "@/lib/email/contact-routing";
 
 function Row({
   icon,
@@ -21,30 +27,48 @@ function Row({
   );
 }
 
+function PhoneList({ numbers }: { numbers: string[] }) {
+  return (
+    <div className="flex flex-col gap-1">
+      {numbers.map((number) => (
+        <a key={number} href={`tel:${number.replace(/\s/g, "")}`} dir="ltr" className="inline-block">
+          {number}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 export function ContactDetails({
-  email,
-  phone,
   address,
-  hotlinesLabel,
+  generalLabel,
+  quoteLabel,
   queriesLabel,
   hqLabel,
 }: {
-  email: string;
-  phone: string;
   address: string;
-  hotlinesLabel: string;
+  generalLabel: string;
+  quoteLabel: string;
   queriesLabel: string;
   hqLabel: string;
 }) {
   return (
     <div className="mt-10 space-y-5 rounded-2xl bg-[#111] px-6 py-6">
-      <Row icon={<IconPhone />} label={hotlinesLabel}>
-        <a href={`tel:${phone.replace(/\s/g, "")}`} dir="ltr" className="inline-block">
-          {phone}
-        </a>
+      <Row icon={<IconPhone />} label={generalLabel}>
+        <PhoneList numbers={GENERAL_CONTACT_PHONES} />
+      </Row>
+      <Row icon={<IconPhone />} label={quoteLabel}>
+        <PhoneList numbers={QUOTE_CONTACT_PHONES} />
       </Row>
       <Row icon={<IconMail />} label={queriesLabel}>
-        <a href={`mailto:${email}`}>{email}</a>
+        <div className="flex flex-col gap-1">
+          <a href={`mailto:${CONTACT_GENERAL_EMAIL}`}>{CONTACT_GENERAL_EMAIL}</a>
+          {CONTACT_QUOTE_EMAILS.map((email) => (
+            <a key={email} href={`mailto:${email}`}>
+              {email}
+            </a>
+          ))}
+        </div>
       </Row>
       <Row icon={<IconPin className="size-5" />} label={hqLabel}>
         <p>{address}</p>

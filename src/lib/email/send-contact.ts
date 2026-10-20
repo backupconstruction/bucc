@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
+import { contactRecipients } from "./contact-routing";
 import {
-  CONTACT_TO_EMAIL,
   contactEmailHtml,
   contactEmailSubject,
   contactEmailText,
@@ -56,7 +56,7 @@ async function sendWithResend(payload: ContactEmailPayload) {
       },
       body: JSON.stringify({
         from: fromAddress(),
-        to: [CONTACT_TO_EMAIL],
+        to: contactRecipients(payload.subject),
         reply_to: payload.email,
         subject: contactEmailSubject(payload),
         html: contactEmailHtml(payload),
@@ -93,7 +93,7 @@ async function sendWithSmtp(payload: ContactEmailPayload) {
 
     await transporter.sendMail({
       from: fromAddress(),
-      to: CONTACT_TO_EMAIL,
+      to: contactRecipients(payload.subject),
       replyTo: `${payload.name} <${payload.email}>`,
       subject: contactEmailSubject(payload),
       html: contactEmailHtml(payload),
@@ -107,8 +107,8 @@ async function sendWithSmtp(payload: ContactEmailPayload) {
 }
 
 export async function sendContactEmail(payload: ContactEmailPayload) {
-  if (!CONTACT_TO_EMAIL) {
-    throw new ContactEmailError("CONTACT_TO_EMAIL is not set.", "not_configured");
+  if (!contactRecipients(payload.subject).length) {
+    throw new ContactEmailError("Contact recipients are not set.", "not_configured");
   }
   if (await sendWithResend(payload)) return;
   if (await sendWithSmtp(payload)) return;

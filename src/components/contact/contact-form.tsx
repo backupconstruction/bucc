@@ -5,15 +5,18 @@ import { useTranslations } from "next-intl";
 import { IconArrow } from "@/components/ui/icons";
 import { SelectDropdown } from "@/components/ui/select-dropdown";
 import { pushSiteToast } from "@/components/ui/site-toast";
+import { contactRecipients } from "@/lib/email/contact-routing";
 
-const SUBJECTS = ["general", "designBuild", "projectManagement", "interiorDesign"] as const;
+const SUBJECTS = ["generalInquiry", "general", "designBuild", "projectManagement", "interiorDesign"] as const;
 
 const field =
   "w-full rounded-md border border-white/10 bg-[#111] px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:border-[#FFC72C]";
 
-export function ContactForm({ locale, replyEmail }: { locale: string; replyEmail?: string }) {
+export function ContactForm({ locale }: { locale: string; replyEmail?: string }) {
   const t = useTranslations("contact");
   const [status, setStatus] = useState<"idle" | "sending">("idle");
+  const [subject, setSubject] = useState<(typeof SUBJECTS)[number]>("generalInquiry");
+  const replyTo = contactRecipients(subject).join(", ");
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,6 +45,7 @@ export function ContactForm({ locale, replyEmail }: { locale: string; replyEmail
         return;
       }
       form.reset();
+      setSubject("generalInquiry");
       pushSiteToast(t("success"));
     } catch {
       pushSiteToast(t("emailFailed"), "error");
@@ -89,7 +93,8 @@ export function ContactForm({ locale, replyEmail }: { locale: string; replyEmail
             name="subject"
             label={t("subject")}
             required
-            defaultValue="general"
+            value={subject}
+            onChange={(next) => setSubject(next as (typeof SUBJECTS)[number])}
             triggerClassName={field}
             menuClassName="overflow-hidden rounded-md border border-white/10 bg-[#111] text-white shadow-[var(--shadow)]"
             optionClassName="text-white hover:bg-white/10"
@@ -112,7 +117,7 @@ export function ContactForm({ locale, replyEmail }: { locale: string; replyEmail
           />
         </label>
         <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-end sm:justify-between">
-          <p className="max-w-xs text-xs leading-relaxed text-white/45">{t("note", { email: replyEmail || "info@bucc.qa" })}</p>
+          <p className="max-w-xs text-xs leading-relaxed text-white/45">{t("note", { email: replyTo })}</p>
           <button
             type="submit"
             disabled={status === "sending"}

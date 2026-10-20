@@ -1,8 +1,9 @@
 import { siteUrl } from "@/lib/utils";
-
-export const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL?.trim() || "info@bucc.qa";
+export { contactRecipients } from "./contact-routing";
 
 export const SUBJECT_LABELS: Record<string, { en: string; ar: string }> = {
+  generalInquiry: { en: "General inquiry", ar: "استفسار عام" },
+  "General inquiry": { en: "General inquiry", ar: "استفسار عام" },
   general: { en: "General contracting", ar: "مقاولات عامة" },
   designBuild: { en: "Design & build", ar: "تصميم وتنفيذ" },
   projectManagement: { en: "Project management", ar: "إدارة المشاريع" },
@@ -116,8 +117,8 @@ export function contactEmailHtml(payload: ContactEmailPayload) {
                       <p style="margin:4px 0 0;font-size:15px;color:#F4F4F4;font-weight:600;">Construction</p>
                     </td>
                     <td align="right" dir="rtl" valign="middle" style="font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;">
-                      <p style="margin:0;font-size:13px;color:#FFC72C;">باك أب</p>
-                      <p style="margin:4px 0 0;font-size:12px;color:#F4F4F4;">للإنشاءات</p>
+                      <p style="margin:0;font-size:13px;color:#FFC72C;">باك اب</p>
+                      <p style="margin:4px 0 0;font-size:12px;color:#F4F4F4;">للمقاولات</p>
                     </td>
                   </tr>
                 </table>
@@ -167,7 +168,7 @@ export function contactEmailHtml(payload: ContactEmailPayload) {
             <tr>
               <td style="padding:18px 28px 24px;background:#f3f3f3;">
                 <p style="margin:0;font-size:12px;color:#56626E;">Back Up Construction · Qatar</p>
-                <p dir="rtl" style="margin:6px 0 0;font-size:12px;color:#56626E;font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;">باك أب للإنشاءات · قطر</p>
+                <p dir="rtl" style="margin:6px 0 0;font-size:12px;color:#56626E;font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;">باك اب للمقاولات · قطر</p>
                 <p style="margin:10px 0 0;font-size:11px;"><a href="${origin}" style="color:#FFC72C;text-decoration:none;">${origin.replace(/^https?:\/\//, "")}</a></p>
               </td>
             </tr>

@@ -84,6 +84,12 @@ export function siteUrl(path = "") {
   return `${base.replace(/\/$/, "")}${path}`;
 }
 
+export const DOHA_MAP_QUERY = "Doha, Qatar";
+
+export function mapsQueryEmbed(query: string) {
+  return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=12&output=embed`;
+}
+
 export function mapsEmbedSrc(raw: string) {
   if (!raw) return "";
   const value = raw.trim().replace(/&amp;/g, "&");
@@ -95,21 +101,25 @@ export function mapsEmbedSrc(raw: string) {
   try {
     const parsed = new URL(candidate);
     const host = parsed.hostname.toLowerCase();
-    const allowed =
-      host === "google.com" ||
-      host.endsWith(".google.com") ||
-      host === "maps.google.com" ||
-      host === "maps.app.goo.gl" ||
-      host === "goo.gl";
+    const allowed = host === "google.com" || host.endsWith(".google.com") || host === "maps.google.com";
     if (!allowed) return "";
-    if (host.endsWith(".google.com") && parsed.pathname.includes("/maps") && !parsed.pathname.includes("/embed")) {
-      parsed.searchParams.set("output", "embed");
+    if (parsed.pathname.includes("/maps/embed") || parsed.pathname.includes("/embed/")) {
       return parsed.toString();
     }
-    return parsed.toString();
+    const query =
+      parsed.searchParams.get("q") ||
+      parsed.searchParams.get("query") ||
+      decodeURIComponent((parsed.pathname.match(/\/place\/([^/]+)/)?.[1] || "").replace(/\+/g, " "));
+    if (query) return mapsQueryEmbed(query);
+    if (parsed.pathname.includes("/maps")) return mapsQueryEmbed(DOHA_MAP_QUERY);
+    return "";
   } catch {
     return "";
   }
+}
+
+export function mapsEmbedSrcOrDoha(raw: string, address = "") {
+  return mapsEmbedSrc(raw) || mapsQueryEmbed(address.trim() || DOHA_MAP_QUERY);
 }
 
 export const EXPIRY_SOON_DAYS = 30;
