@@ -61,6 +61,11 @@ async function sendWithResend(payload: ContactEmailPayload) {
         subject: contactEmailSubject(payload),
         html: contactEmailHtml(payload),
         text: contactEmailText(payload),
+        attachments: (payload.attachments || []).map((item) => ({
+          filename: item.filename,
+          content: item.content.toString("base64"),
+          content_type: item.contentType,
+        })),
       }),
       signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
     });
@@ -98,6 +103,11 @@ async function sendWithSmtp(payload: ContactEmailPayload) {
       subject: contactEmailSubject(payload),
       html: contactEmailHtml(payload),
       text: contactEmailText(payload),
+      attachments: (payload.attachments || []).map((item) => ({
+        filename: item.filename,
+        content: item.content,
+        contentType: item.contentType,
+      })),
     });
     return true;
   } catch (error) {

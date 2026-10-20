@@ -6,6 +6,12 @@ import { IconArrow } from "@/components/ui/icons";
 import { SelectDropdown } from "@/components/ui/select-dropdown";
 import { pushSiteToast } from "@/components/ui/site-toast";
 import { contactRecipients } from "@/lib/email/contact-routing";
+import {
+  CONTACT_ATTACHMENT_ACCEPT,
+  isAllowedContactAttachment,
+  MAX_CONTACT_ATTACHMENTS,
+  MAX_CONTACT_ATTACHMENTS_TOTAL,
+} from "@/lib/validations";
 
 const SUBJECTS = ["generalInquiry", "general", "designBuild", "projectManagement", "interiorDesign"] as const;
 
@@ -16,7 +22,32 @@ export function ContactForm({ locale }: { locale: string; replyEmail?: string })
   const t = useTranslations("contact");
   const [status, setStatus] = useState<"idle" | "sending">("idle");
   const [subject, setSubject] = useState<(typeof SUBJECTS)[number]>("generalInquiry");
+  const [files, setFiles] = useState<File[]>([]);
   const replyTo = contactRecipients(subject).join(", ");
+
+  function addFiles(list: FileList | null) {
+    const incoming = Array.from(list || []);
+    if (!incoming.length) return;
+    const next = [...files];
+    for (const file of incoming) {
+      if (!isAllowedContactAttachment(file)) {
+        pushSiteToast(t("attachmentInvalid"), "error");
+        continue;
+      }
+      if (next.length >= MAX_CONTACT_ATTACHMENTS) {
+        pushSiteToast(t("attachmentLimit"), "error");
+        break;
+      }
+      if (next.some((item) => item.name === file.name && item.size === file.size)) continue;
+      next.push(file);
+    }
+    const total = next.reduce((sum, file) => sum + file.size, 0);
+    if (total > MAX_CONTACT_ATTACHMENTS_TOTAL) {
+      pushSiteToast(t("attachmentTooLarge"), "error");
+      return;
+    }
+    setFiles(next);
+  }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,13 +58,16 @@ export function ContactForm({ locale }: { locale: string; replyEmail?: string })
       return;
     }
 
-    const data = Object.fromEntries(new FormData(form).entries());
+    const data = new FormData(form);
+    data.set("locale", locale);
+    data.delete("attachments");
+    for (const file of files) data.append("attachments", file);
+
     setStatus("sending");
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, locale }),
+        body: data,
       });
       const result = (await response.json().catch(() => null)) as { error?: string; ok?: boolean } | null;
       if (response.status === 429) {
@@ -41,11 +75,21 @@ export function ContactForm({ locale }: { locale: string; replyEmail?: string })
         return;
       }
       if (!response.ok) {
-        pushSiteToast(result?.error === "emailConfig" ? t("emailConfig") : t("emailFailed"), "error");
+        const messages = {
+          emailConfig: t("emailConfig"),
+          attachmentInvalid: t("attachmentInvalid"),
+          attachmentLimit: t("attachmentLimit"),
+          attachmentTooLarge: t("attachmentTooLarge"),
+        } as const;
+        pushSiteToast(
+          messages[result?.error as keyof typeof messages] || t("emailFailed"),
+          "error",
+        );
         return;
       }
       form.reset();
       setSubject("generalInquiry");
+      setFiles([]);
       pushSiteToast(t("success"));
     } catch {
       pushSiteToast(t("emailFailed"), "error");
@@ -116,6 +160,44 @@ export function ContactForm({ locale }: { locale: string; replyEmail?: string })
             className={`${field} min-h-28 resize-y`}
           />
         </label>
+        <div className="grid gap-2 text-sm">
+          <span>{t("attachments")}</span>
+          <p className="text-xs text-white/45">{t("attachmentsHint")}</p>
+          <label className={`${field} cursor-pointer`}>
+            <input
+              type="file"
+              multiple
+              accept={CONTACT_ATTACHMENT_ACCEPT}
+              className="sr-only"
+              onChange={(event) => {
+                addFiles(event.target.files);
+                event.target.value = "";
+              }}
+            />
+            <span className="text-white/70">{t("attachmentsChoose")}</span>
+          </label>
+          {files.length ? (
+            <ul className="grid gap-2">
+              {files.map((file) => (
+                <li
+                  key={`${file.name}-${file.size}`}
+                  className="flex items-center justify-between gap-3 rounded-md border border-white/10 bg-[#111] px-4 py-2 text-xs text-white/80"
+                >
+                  <span className="min-w-0 truncate" dir="ltr">
+                    {file.name}
+                  </span>
+                  <button
+                    type="button"
+                    className="shrink-0 text-white/45 hover:text-white"
+                    onClick={() => setFiles((current) => current.filter((item) => item !== file))}
+                  >
+                    ×
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
         <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-end sm:justify-between">
           <p className="max-w-xs text-xs leading-relaxed text-white/45">{t("note", { email: replyTo })}</p>
           <button

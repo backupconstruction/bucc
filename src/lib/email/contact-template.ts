@@ -14,6 +14,12 @@ export const SUBJECT_LABELS: Record<string, { en: string; ar: string }> = {
   "Interior design": { en: "Interior design", ar: "التصميم الداخلي" },
 };
 
+export type ContactEmailAttachment = {
+  filename: string;
+  content: Buffer;
+  contentType: string;
+};
+
 export type ContactEmailPayload = {
   name: string;
   email: string;
@@ -21,6 +27,7 @@ export type ContactEmailPayload = {
   subject: string;
   message: string;
   locale: string;
+  attachments?: ContactEmailAttachment[];
 };
 
 function escapeHtml(value: string) {
@@ -67,7 +74,7 @@ export function contactEmailSubject(payload: ContactEmailPayload) {
 
 export function contactEmailText(payload: ContactEmailPayload) {
   const labels = subjectLabels(payload.subject);
-  return [
+  const lines = [
     "Back Up Construction",
     "New project enquiry / استفسار مشروع جديد",
     "",
@@ -75,9 +82,12 @@ export function contactEmailText(payload: ContactEmailPayload) {
     `Email / البريد: ${payload.email}`,
     `Phone / الهاتف: ${payload.phone}`,
     `Subject / الموضوع: ${labels.en} / ${labels.ar}`,
-    "",
-    payload.message,
-  ].join("\n");
+  ];
+  if (payload.attachments?.length) {
+    lines.push(`Attachments / المرفقات: ${payload.attachments.map((item) => item.filename).join(", ")}`);
+  }
+  lines.push("", payload.message);
+  return lines.join("\n");
 }
 
 export function contactEmailHtml(payload: ContactEmailPayload) {
@@ -149,6 +159,16 @@ export function contactEmailHtml(payload: ContactEmailPayload) {
                   ${fieldRow("Email", "البريد", `<a href="mailto:${escapeHtml(payload.email)}" style="color:#12171C;text-decoration:none;">${escapeHtml(payload.email)}</a>`, true)}
                   ${fieldRow("Phone", "الهاتف", `<a href="tel:${escapeHtml(payload.phone.replace(/\s/g, ""))}" style="color:#12171C;text-decoration:none;">${escapeHtml(payload.phone)}</a>`, true)}
                   ${fieldRow("Subject", "الموضوع", `${escapeHtml(labels.en)} <span style="color:#FFC72C;">·</span> <span dir="rtl" style="font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;">${escapeHtml(labels.ar)}</span>`)}
+                  ${
+                    payload.attachments?.length
+                      ? fieldRow(
+                          "Attachments",
+                          "المرفقات",
+                          escapeHtml(payload.attachments.map((item) => item.filename).join(", ")),
+                          true,
+                        )
+                      : ""
+                  }
                   ${fieldRow("Message", "الرسالة", withBreaks(payload.message))}
                 </table>
               </td>

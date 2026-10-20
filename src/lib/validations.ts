@@ -28,6 +28,34 @@ export const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 export const MAX_GALLERY_IMAGES = 10;
 export const IMAGE_ACCEPT = "image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif";
 export const MAX_DOC_SIZE = 15 * 1024 * 1024;
+export const CONTACT_ATTACHMENT_EXTS = [
+  ".pdf",
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+  ".avif",
+  ".gif",
+  ".dwg",
+  ".dxf",
+];
+export const CONTACT_ATTACHMENT_ACCEPT = CONTACT_ATTACHMENT_EXTS.join(",");
+export const MAX_CONTACT_ATTACHMENT_SIZE = 10 * 1024 * 1024;
+export const MAX_CONTACT_ATTACHMENTS = 8;
+export const MAX_CONTACT_ATTACHMENTS_TOTAL = 25 * 1024 * 1024;
+
+export function contactAttachmentExt(name: string) {
+  const index = name.lastIndexOf(".");
+  return index === -1 ? "" : name.slice(index).toLowerCase();
+}
+
+export function isAllowedContactAttachment(file: { name: string; size: number }) {
+  return (
+    file.size > 0 &&
+    file.size <= MAX_CONTACT_ATTACHMENT_SIZE &&
+    CONTACT_ATTACHMENT_EXTS.includes(contactAttachmentExt(file.name))
+  );
+}
 
 export function isAllowedImage(file: File) {
   return ALLOWED_IMAGE_TYPES.includes(file.type) && file.size <= MAX_IMAGE_SIZE;
