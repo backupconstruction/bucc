@@ -8,8 +8,8 @@ export const CONTACT_QUOTE_EMAILS = (
   .map((value) => value.trim())
   .filter(Boolean);
 
-export const GENERAL_CONTACT_PHONES = ["+974 4444 0683", "+974 7095 8889"];
-export const QUOTE_CONTACT_PHONES = ["+974 4444 0683"];
+export const GENERAL_CONTACT_PHONES = ["+974 4444 0683"];
+export const QUOTE_CONTACT_PHONES = ["+974 4444 0683", "+974 7095 8889"];
 
 const GENERAL_INQUIRY_SUBJECTS = new Set([
   "generalinquiry",
